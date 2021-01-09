@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoginActivity">
+    tools:context=".RegisterActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -13,24 +13,52 @@
         android:background="#c10e88"
         android:gravity="center"
         android:padding="10dp"
-        android:text="@string/login"
+        android:text="@string/register"
         android:textColor="@color/white"
         android:textSize="24sp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/username"
+        android:hint="@string/name"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="50dp"
-        android:layout_marginBottom="5dp"
-        />
+        android:layout_marginBottom="5dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/email"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="5dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/username"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="5dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="5dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/confirm_password"
         android:inputType="textPassword"
         android:maxLines="1"
         android:layout_marginLeft="50dp"
@@ -46,22 +74,22 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="50dp"
         android:layout_marginBottom="20dp"
-        android:text="@string/login" />
+        android:text="@string/register" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/not_user"
+        android:text="@string/already_user"
         android:gravity="center" />
 
     <TextView
-        android:id="@+id/to_register"
+        android:id="@+id/to_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/register"
+        android:text="@string/login"
         android:gravity="center"
         android:textSize="18sp"
         android:clickable="true"
-        android:onClick="onClickToRegister" />
+        android:onClick="onClickToLogin" />
 
 </LinearLayout>

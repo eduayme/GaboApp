@@ -7,19 +7,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class LoginActivity<textView> extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
     }
 
-    public void onClickToRegister(View v)
+    public void onClickToLogin(View v)
     {
-        TextView tv = (TextView) findViewById(R.id.to_register);
+        TextView tv = (TextView) findViewById(R.id.to_login);
 
-        Intent myIntent = new Intent(this, RegisterActivity.class);
+        Intent myIntent = new Intent(this, LoginActivity.class);
         this.startActivity(myIntent);
     }
 
