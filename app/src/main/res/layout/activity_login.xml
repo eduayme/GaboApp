@@ -18,6 +18,7 @@
         android:textSize="24sp" />
 
     <EditText
+        android:id="@+id/input_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/username"
@@ -28,6 +29,7 @@
         />
 
     <EditText
+        android:id="@+id/input_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password"
@@ -39,7 +41,7 @@
         android:layout_marginBottom="20dp" />
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
