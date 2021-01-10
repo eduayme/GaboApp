@@ -23,6 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
         username = findViewById(R.id.edit_username);
         password = findViewById(R.id.edit_password);
         confirm_password = findViewById(R.id.edit_confirm_password);
+        btn_register = findViewById(R.id.button_register);
 
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,9 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void onClickToLogin(View v)
     {
-        TextView tv = (TextView) findViewById(R.id.to_login);
-
-        Intent myIntent = new Intent(this, LoginActivity.class);
+        Intent myIntent = new Intent(RegisterActivity.this, LoginActivity.class);
         this.startActivity(myIntent);
     }
 

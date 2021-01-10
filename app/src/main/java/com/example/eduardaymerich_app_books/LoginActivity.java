@@ -33,9 +33,7 @@ public class LoginActivity<textView> extends AppCompatActivity {
 
     public void onClickToRegister(View v)
     {
-        TextView tv = (TextView) findViewById(R.id.to_register);
-
-        Intent myIntent = new Intent(this, RegisterActivity.class);
+        Intent myIntent = new Intent(LoginActivity.this, RegisterActivity.class);
         this.startActivity(myIntent);
     }
 

@@ -64,6 +64,8 @@
         android:gravity="center"
         android:textSize="18sp"
         android:clickable="true"
-        android:onClick="onClickToRegister" />
+        android:onClick="onClickToRegister"
+        android:focusable="true"
+        android:textColor="?colorPrimaryVariant" />
 
 </LinearLayout>
