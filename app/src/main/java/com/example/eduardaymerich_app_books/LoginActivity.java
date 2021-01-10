@@ -20,6 +20,7 @@ public class LoginActivity<textView> extends AppCompatActivity {
 
         username = findViewById(R.id.input_username);
         password = findViewById(R.id.input_password);
+        btn_login = findViewById(R.id.button_login);
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
