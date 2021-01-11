@@ -20,4 +20,6 @@
         <activity android:name=".HomeActivity"/>
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>
