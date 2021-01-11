@@ -10,6 +10,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "gaboapp.db";
     private static final int DATABASE_VERSION = 1;
+    private static final String CREATE_DATABASE = "CREATE TABLE if not exists users (\n" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, \n" +
+            "username TEXT, password TEXT \n" +
+            ");";
+    private static final String DROP_DATABASE = "DROP TABLE users;";
 
     // Database creation sql statement
     private static final String DATABASE_CREATE =
@@ -40,18 +45,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE if not exists users (\n" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, \n" +
-                "username TEXT, password TEXT \n" +
-                ");");
+        sqLiteDatabase.execSQL(CREATE_DATABASE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE users;");
-        sqLiteDatabase.execSQL("CREATE TABLE if not exists users (\n" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, \n" +
-                "username TEXT, password TEXT \n" +
-                ");");
+        sqLiteDatabase.execSQL(DROP_DATABASE);
+        sqLiteDatabase.execSQL(CREATE_DATABASE);
     }
 }
