@@ -39,7 +39,7 @@ public class LoginActivity<textView> extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Login successful! :)", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(LoginActivity.this, "Login failed! :( |" + usernameValue + "|" + passwordValue, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Login failed! :(", Toast.LENGTH_SHORT).show();
                 }
             }
         });

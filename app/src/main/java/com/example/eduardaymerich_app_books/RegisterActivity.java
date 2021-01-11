@@ -44,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
                     contentValues.put("password", passwordValue);
 
                     databaseHelper.insertUser(contentValues);
-                    Toast.makeText(RegisterActivity.this, "User registered! :) |" + usernameValue + "|" + passwordValue, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "User registered! :)", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Toast.makeText(RegisterActivity.this, "User register failed! :(", Toast.LENGTH_SHORT).show();
