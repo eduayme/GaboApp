@@ -1,17 +1,20 @@
 package com.example.eduardaymerich_app_books;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.eduardaymerich_app_books.db.MySQLiteHelper;
 
 public class LoginActivity<textView> extends AppCompatActivity {
     EditText username, password;
     Button btn_login;
+    MySQLiteHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +24,23 @@ public class LoginActivity<textView> extends AppCompatActivity {
         username = findViewById(R.id.input_username);
         password = findViewById(R.id.input_password);
         btn_login = findViewById(R.id.button_login);
+        databaseHelper = new MySQLiteHelper(this);
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String usernameValue = username.getText().toString();
                 String passwordValue = password.getText().toString();
+
+                if( databaseHelper.isLoginValid(usernameValue, passwordValue)) {
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
+
+                    Toast.makeText(LoginActivity.this, "Login successful! :)", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(LoginActivity.this, "Login failed! :( |" + usernameValue + "|" + passwordValue, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
