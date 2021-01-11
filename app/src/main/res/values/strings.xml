@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">GaboApp</string>
     <string name="hello_app_books">Hello GaboApp user!</string>
-    <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -10,4 +9,6 @@
     <string name="register">Register</string>
     <string name="not_user">Don\'t have an account?</string>
     <string name="already_user">Already a user?</string>
+    <string name="author">Author</string>
+    <string name="title">Title</string>
 </resources>
