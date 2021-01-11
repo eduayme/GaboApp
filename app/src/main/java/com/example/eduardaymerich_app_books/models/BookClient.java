@@ -1,7 +1,10 @@
 package com.example.eduardaymerich_app_books.models;
 
+import android.widget.Toast;
+
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.eduardaymerich_app_books.HomeActivity;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -22,7 +25,8 @@ public class BookClient {
         try {
             String url = getApiUrl("search.json?q=");
             client.get(url + URLEncoder.encode(query, "utf-8"), handler);
-        } catch (UnsupportedEncodingException e) {
+        }
+        catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }

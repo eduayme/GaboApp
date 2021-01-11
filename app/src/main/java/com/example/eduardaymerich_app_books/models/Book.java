@@ -79,6 +79,7 @@ public class Book {
 
     // Tratar resultado json de una lista de libros
     public static ArrayList<Book> fromJson(JSONArray jsonArray) {
+        // Lista temporal
         ArrayList<Book> books = new ArrayList<Book>(jsonArray.length());
 
         for (int i = 0; i < jsonArray.length(); i++) {
