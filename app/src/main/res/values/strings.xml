@@ -11,4 +11,5 @@
     <string name="already_user">Already a user?</string>
     <string name="author">Author</string>
     <string name="title">Title</string>
+    <string name="search">Search</string>
 </resources>

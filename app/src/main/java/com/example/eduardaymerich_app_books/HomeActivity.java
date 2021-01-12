@@ -1,30 +1,33 @@
 package com.example.eduardaymerich_app_books;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.SearchView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.eduardaymerich_app_books.adapters.BookAdapter;
 import com.example.eduardaymerich_app_books.models.Book;
 import com.example.eduardaymerich_app_books.models.BookClient;
 
-// To be able to do the call to get all to the book search API
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cz.msebera.android.httpclient.Header;
+import java.util.ArrayList;
+
 import okhttp3.Headers;
 
-import java.util.ArrayList;
+// To be able to do the call to get all to the book search API
 
 public class HomeActivity extends AppCompatActivity {
     private ListView lvBooks;
     private BookAdapter bookAdapter;
     private BookClient client;
+    private ArrayList<Book> books;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,40 +38,30 @@ public class HomeActivity extends AppCompatActivity {
         ArrayList<Book> aBooks = new ArrayList<Book>();
         bookAdapter = new BookAdapter(this, aBooks);
         lvBooks.setAdapter(bookAdapter);
-        
-        // get books data
-        fetchBooks();
     }
 
-    // Do the API call to the OpenLibrary
-    private void fetchBooks() {
+    // API call to the OpenLibrary
+    private void fetchBooks(String query) {
         client = new BookClient();
-        client.getBooks("oscar Wilde", new JsonHttpResponseHandler() {
-
-            @Override
-            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Toast.makeText(HomeActivity.this, "Error onFailure HomeActivity! :(", Toast.LENGTH_SHORT).show();
-            }
+        client.getBooks(query, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 try {
                     JSONArray docs = null;
+                    JSONObject response = json.jsonObject;
 
-                    if(json != null) {
-                        // Crear json object
-                        JSONObject response = new JSONObject(String.valueOf(json));
+                    if(response != null) {
 
-                        // Get docs json array
                         docs = response.getJSONArray("docs");
 
-                        // Parse json array into array of objects
+                        // Lista temporal
                         final ArrayList<Book> books = Book.fromJson(docs);
 
-                        // Remove all books from the adapter
+                        // Empty adapater
                         bookAdapter.clear();
 
-                        // Load model objects into the adapter
+                        // Insert books en adapter
                         for (Book book : books) {
                             bookAdapter.add(book);
                         }
@@ -76,10 +69,49 @@ public class HomeActivity extends AppCompatActivity {
                         bookAdapter.notifyDataSetChanged();
                     }
                 } catch (JSONException e) {
+                    // Invalid JSON format, show appropriate error.
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+
+            }
         });
+    }
+
+    // Insertar menu en top
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                fetchBooks(query);
+
+                // Reset SearchView
+                searchView.clearFocus();
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+                searchItem.collapseActionView();
+
+                // Set activity title to search query
+                HomeActivity.this.setTitle(query);
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+        return true;
     }
     
 }

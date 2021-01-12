@@ -27,14 +27,12 @@ public class Book {
 
     public String getCoverUrl() {
         return "http://covers.openlibrary.org/b/olid/" +
-                openLibraryId +
-                "-M.jpg?default=false";
+                openLibraryId + "-M.jpg";
     }
 
     public String getLargeCoverUrl() {
         return "http://covers.openlibrary.org/b/olid/" +
-                openLibraryId +
-                "-L.jpg?default=false";
+                openLibraryId + "-L.jpg";
     }
 
     public static Book fromJson(JSONObject jsonObject) {
@@ -49,9 +47,12 @@ public class Book {
                 final JSONArray ids = jsonObject.getJSONArray("edition_key");
                 book.openLibraryId = ids.getString(0);
             }
+
             book.title = jsonObject.has("title_suggest") ?
                     jsonObject.getString("title_suggest") : "";
+
             book.author = getAuthor(jsonObject);
+
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
