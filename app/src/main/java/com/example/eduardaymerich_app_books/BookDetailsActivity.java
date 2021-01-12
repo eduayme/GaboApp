@@ -2,6 +2,7 @@ package com.example.eduardaymerich_app_books;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -33,7 +34,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     private TextView tvPublisher;
     private TextView tvPageCount;
     private Book book;
-    MySQLiteHelper databaseHelper;
+    private MySQLiteHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,12 +132,15 @@ public class BookDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+        String usernameCurrentUser = settings.getString("username", "").toString();
+
         switch (item.getItemId()) {
             case R.id.action_save:
                 // prepare data
                 ContentValues contentValues = new ContentValues();
-                contentValues.put("userId", 0);
-                contentValues.put("openLibraryId", book.getOpenLibraryId());
+                contentValues.put("username", usernameCurrentUser);
+                contentValues.put("id_open_library", book.getOpenLibraryId());
 
                 // save book in user
                 databaseHelper.insertBookInUser(contentValues);
@@ -149,7 +153,7 @@ public class BookDetailsActivity extends AppCompatActivity {
 
             case R.id.action_delete:
                 // prepare data
-                String[] deleteData = {"1", "jack"};
+                String[] deleteData = {usernameCurrentUser, book.getOpenLibraryId()};
 
                 // save book in user
                 databaseHelper.deleteBookInUser(deleteData);

@@ -1,6 +1,7 @@
 package com.example.eduardaymerich_app_books;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,11 @@ public class LoginActivity<textView> extends AppCompatActivity {
                 if( databaseHelper.isLoginValid(usernameValue, passwordValue)) {
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(intent);
+
+                    SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("username", usernameValue);
+                    editor.apply();
 
                     Toast.makeText(LoginActivity.this, "Login successful! :)", Toast.LENGTH_SHORT).show();
                 }

@@ -2,18 +2,22 @@ package com.example.eduardaymerich_app_books;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.eduardaymerich_app_books.adapters.BookAdapter;
+import com.example.eduardaymerich_app_books.db.MySQLiteHelper;
 import com.example.eduardaymerich_app_books.models.Book;
 import com.example.eduardaymerich_app_books.models.BookClient;
 
@@ -34,6 +38,8 @@ public class HomeActivity extends AppCompatActivity {
     private BookClient client;
     private ArrayList<Book> books;
     private ProgressBar progress;
+    private MySQLiteHelper databaseHelper;
+    private String usernameCurrentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,44 @@ public class HomeActivity extends AppCompatActivity {
         lvBooks.setAdapter(bookAdapter);
         setupBookSelectedListener();
         progress = (ProgressBar) findViewById(R.id.progress);
+        // load database;
+        databaseHelper = new MySQLiteHelper(this);
+
+        // get current user
+        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+        usernameCurrentUser = settings.getString("username", "").toString();
+
+        // display username in title
+        final TextView title = (TextView) findViewById(R.id.tvTitleSavedBooks);
+        title.setText("Hi " + usernameCurrentUser + "! Your books:" + databaseHelper.userHasBook(usernameCurrentUser));
+
+        //fetchBooksFromUser();
+    }
+
+    private void fetchBooksFromUser() {
+        final ArrayList<Book> booksFromUser = databaseHelper.getBooksFromUser(usernameCurrentUser);
+
+        if( booksFromUser != null ) {
+            // remove info no books
+            final TextView info = (TextView) findViewById(R.id.tvInfoSavedBooks);
+            info.setVisibility(View.GONE);
+
+            // Show progress bar before any request
+            progress.setVisibility(ProgressBar.VISIBLE);
+
+            // Empty adapater
+            bookAdapter.clear();
+
+            // Insert books en adapter
+            for (Book book : booksFromUser) {
+                bookAdapter.add(book);
+            }
+
+            bookAdapter.notifyDataSetChanged();
+
+            // Hide progress bar
+            progress.setVisibility(ProgressBar.GONE);
+        }
     }
 
     // API call to the OpenLibrary
@@ -107,7 +151,13 @@ public class HomeActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                // hide list saved books
+                final TextView title = (TextView) findViewById(R.id.tvTitleSavedBooks);
+                title.setVisibility(View.GONE);
+                final TextView info = (TextView) findViewById(R.id.tvInfoSavedBooks);
+                info.setVisibility(View.GONE);
 
+                // get data from search
                 fetchBooks(query);
 
                 // Reset SearchView

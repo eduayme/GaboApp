@@ -37,6 +37,24 @@ public class Book implements Serializable {
                 openLibraryId + "-L.jpg?default=false";
     }
 
+    public static Book fromSingleJson(JSONObject jsonObject) {
+        Book book = new Book();
+        try {
+            book.openLibraryId = jsonObject.getString("key").replace("/books/","");;
+
+            book.title = jsonObject.has("title") ?
+                    jsonObject.getString("title") : "";
+
+            book.author = getAuthor(jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return book;
+    }
+
     public static Book fromJson(JSONObject jsonObject) {
         Book book = new Book();
         try {
