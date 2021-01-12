@@ -1,5 +1,6 @@
 package com.example.eduardaymerich_app_books;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -134,7 +135,7 @@ public class HomeActivity extends AppCompatActivity {
         lvBooks.setOnItemClickListener((parent, view, position, id) -> {
             Intent intent = new Intent(HomeActivity.this, BookDetailsActivity.class);
             intent.putExtra(BOOK_DETAIL_KEY, bookAdapter.getItem(position));
-            startActivity(intent);
+            startActivityForResult(intent, 0);
         });
     }
     
