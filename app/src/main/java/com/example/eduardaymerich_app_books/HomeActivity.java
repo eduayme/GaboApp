@@ -61,18 +61,20 @@ public class HomeActivity extends AppCompatActivity {
 
         // display username in title
         final TextView title = (TextView) findViewById(R.id.tvTitleSavedBooks);
-        title.setText("Hi " + usernameCurrentUser + "! Your books:" + databaseHelper.userHasBook(usernameCurrentUser));
+        int count = databaseHelper.countBooksUser(usernameCurrentUser);
+        title.setText("Hi " + usernameCurrentUser + "! Your books (" + count + ")");
 
         //fetchBooksFromUser();
     }
 
     private void fetchBooksFromUser() {
-        final ArrayList<Book> booksFromUser = databaseHelper.getBooksFromUser(usernameCurrentUser);
-
-        if( booksFromUser != null ) {
+        if( databaseHelper.countBooksUser(usernameCurrentUser) > 0 ) {
             // remove info no books
             final TextView info = (TextView) findViewById(R.id.tvInfoSavedBooks);
             info.setVisibility(View.GONE);
+
+            // get books from the user
+            final ArrayList<Book> booksFromUser = databaseHelper.getBooksFromUser(usernameCurrentUser);
 
             // Show progress bar before any request
             progress.setVisibility(ProgressBar.VISIBLE);

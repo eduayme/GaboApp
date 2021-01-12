@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
@@ -26,21 +27,21 @@ import okhttp3.Headers;
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "gaboapp.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
-    private static final String CREATE_TABLE_1 =
+    private static final String CREATE_TABLE_USERS =
             "CREATE TABLE if not exists users " +
             "( id INTEGER PRIMARY KEY AUTOINCREMENT," +
             " email TEXT," +
             " username TEXT, password TEXT )";
-    private static final String DROP_TABLE_1 = "DROP TABLE users;";
+    private static final String DROP_TABLE_USERS = "DROP TABLE if exists users";
 
-    private static final String CREATE_TABLE_2 =
+    private static final String CREATE_TABLE_USERS_BOOKS =
             "CREATE TABLE if not exists users_books " +
                     "( id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     " username TEXT," +
                     " id_open_library TEXT )";
-    private static final String DROP_TABLE_2 = "DROP TABLE users_books;";
+    private static final String DROP_TABLE_USERS_BOOKS = "DROP TABLE if exists users_books";
 
 
     public MySQLiteHelper(Context context) {
@@ -49,14 +50,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(CREATE_TABLE_1);
-        sqLiteDatabase.execSQL(CREATE_TABLE_2);
+        sqLiteDatabase.execSQL(CREATE_TABLE_USERS);
+        sqLiteDatabase.execSQL(CREATE_TABLE_USERS_BOOKS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL(DROP_TABLE_1);
-        sqLiteDatabase.execSQL(DROP_TABLE_2);
+        sqLiteDatabase.execSQL(DROP_TABLE_USERS);
+        sqLiteDatabase.execSQL(DROP_TABLE_USERS_BOOKS);
 
         onCreate(sqLiteDatabase);
     }
@@ -65,17 +66,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         getWritableDatabase().insert("users", "", contentValues );
     }
 
-    public boolean userHasBook(String username) {
+    public int countBooksUser(String username) {
         String sql = "Select count(*) from users_books where username='" + username + "'";
         SQLiteStatement statement = getReadableDatabase().compileStatement(sql);
-        long l = statement.simpleQueryForLong();
+        int numRows = (int) DatabaseUtils.longForQuery(getReadableDatabase(), sql, null);
 
-        if( l == 1 ) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return numRows;
     }
 
     public void insertBookInUser(ContentValues contentValues) {
