@@ -31,11 +31,19 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     public void insertBookInUser(ContentValues contentValues) {
-        getWritableDatabase().insert("books", "", contentValues );
+        //getWritableDatabase().insert("books", "", contentValues );
     }
 
     public void deleteBookInUser(String[] contentValues) {
-        getWritableDatabase().delete("books", "", contentValues );
+        //getWritableDatabase().delete("books", "", contentValues );
+    }
+
+    public boolean bookIsSavedInUser(String openLibraryId) {
+        boolean isSaved = false;
+
+        //getWritableDatabase().delete("books", "", contentValues );
+
+        return isSaved;
     }
 
     public boolean isLoginValid(String username, String password) {

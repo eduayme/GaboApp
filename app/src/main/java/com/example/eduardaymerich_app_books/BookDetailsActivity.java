@@ -104,7 +104,7 @@ public class BookDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-
+                Toast.makeText(BookDetailsActivity.this, "Error getting details from the book", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -113,6 +113,18 @@ public class BookDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_book_details, menu);
+
+        MenuItem item_save = menu.findItem(R.id.action_save);
+        MenuItem item_delete = menu.findItem(R.id.action_delete);
+
+        if( databaseHelper.bookIsSavedInUser(book.getOpenLibraryId()) ) {
+            item_save.setVisible(false);
+            item_delete.setVisible(true);
+        }
+        else {
+            item_save.setVisible(true);
+            item_delete.setVisible(false);
+        }
 
         return true;
     }
@@ -128,10 +140,10 @@ public class BookDetailsActivity extends AppCompatActivity {
 
                 // save book in user
                 databaseHelper.insertBookInUser(contentValues);
+                invalidateOptionsMenu();
 
                 // display toast job done
                 Toast.makeText(BookDetailsActivity.this, book.getTitle() + " saved! :)", Toast.LENGTH_LONG).show();
-                invalidateOptionsMenu();
 
                 return true;
 
@@ -141,10 +153,10 @@ public class BookDetailsActivity extends AppCompatActivity {
 
                 // save book in user
                 databaseHelper.deleteBookInUser(deleteData);
+                invalidateOptionsMenu();
 
                 // display toast job done
                 Toast.makeText(BookDetailsActivity.this, book.getTitle() + " removed! :)", Toast.LENGTH_LONG).show();
-                invalidateOptionsMenu();
 
                 return true;
 
@@ -166,6 +178,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             item_save.setVisible(true);
             item_delete.setVisible(false);
         }
+
         return super.onPrepareOptionsMenu(menu);
     }
 }
