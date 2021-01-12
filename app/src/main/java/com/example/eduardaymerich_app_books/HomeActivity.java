@@ -1,8 +1,10 @@
 package com.example.eduardaymerich_app_books;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -23,8 +25,9 @@ import java.util.ArrayList;
 import okhttp3.Headers;
 
 // To be able to do the call to get all to the book search API
-
 public class HomeActivity extends AppCompatActivity {
+    public static final String BOOK_DETAIL_KEY = "book";
+
     private ListView lvBooks;
     private BookAdapter bookAdapter;
     private BookClient client;
@@ -40,6 +43,7 @@ public class HomeActivity extends AppCompatActivity {
         ArrayList<Book> aBooks = new ArrayList<Book>();
         bookAdapter = new BookAdapter(this, aBooks);
         lvBooks.setAdapter(bookAdapter);
+        setupBookSelectedListener();
         progress = (ProgressBar) findViewById(R.id.progress);
     }
 
@@ -122,6 +126,15 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    // Abrir book details on clicj
+    public void setupBookSelectedListener() {
+        lvBooks.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent = new Intent(HomeActivity.this, BookDetailsActivity.class);
+            intent.putExtra(BOOK_DETAIL_KEY, bookAdapter.getItem(position));
+            startActivity(intent);
+        });
     }
     
 }

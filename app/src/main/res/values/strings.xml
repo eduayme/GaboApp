@@ -12,4 +12,6 @@
     <string name="author">Author</string>
     <string name="title">Title</string>
     <string name="search">Search</string>
+    <string name="published_by">Published by</string>
+    <string name="action_settings">settings</string>
 </resources>
