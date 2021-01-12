@@ -1,5 +1,7 @@
 package com.example.eduardaymerich_app_books;
 
+import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,10 +10,12 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.eduardaymerich_app_books.db.MySQLiteHelper;
 import com.example.eduardaymerich_app_books.models.Book;
 import com.example.eduardaymerich_app_books.models.BookClient;
 import com.squareup.picasso.Picasso;
@@ -28,6 +32,8 @@ public class BookDetailsActivity extends AppCompatActivity {
     private TextView tvAuthor;
     private TextView tvPublisher;
     private TextView tvPageCount;
+    private Book book;
+    MySQLiteHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +48,14 @@ public class BookDetailsActivity extends AppCompatActivity {
         tvPageCount = (TextView) findViewById(R.id.tvPageCount);
 
         // book data into views
-        Book book = (Book) getIntent().getSerializableExtra(HomeActivity.BOOK_DETAIL_KEY);
+        book = (Book) getIntent().getSerializableExtra(HomeActivity.BOOK_DETAIL_KEY);
         loadBook(book);
+
+        // set menu
+        invalidateOptionsMenu();
+
+        // load database;
+        databaseHelper = new MySQLiteHelper(this);
     }
 
     private void loadBook(Book book) {
@@ -101,6 +113,59 @@ public class BookDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_book_details, menu);
+
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                // prepare data
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("userId", 0);
+                contentValues.put("openLibraryId", book.getOpenLibraryId());
+
+                // save book in user
+                databaseHelper.insertBookInUser(contentValues);
+
+                // display toast job done
+                Toast.makeText(BookDetailsActivity.this, book.getTitle() + " saved! :)", Toast.LENGTH_LONG).show();
+                invalidateOptionsMenu();
+
+                return true;
+
+            case R.id.action_delete:
+                // prepare data
+                String[] deleteData = {"1", "jack"};
+
+                // save book in user
+                databaseHelper.deleteBookInUser(deleteData);
+
+                // display toast job done
+                Toast.makeText(BookDetailsActivity.this, book.getTitle() + " removed! :)", Toast.LENGTH_LONG).show();
+                invalidateOptionsMenu();
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item_save = menu.findItem(R.id.action_save);
+        MenuItem item_delete = menu.findItem(R.id.action_delete);
+
+        if (item_save.isVisible()) {
+            item_save.setVisible(false);
+            item_delete.setVisible(true);
+        }
+        else {
+            item_save.setVisible(true);
+            item_delete.setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 }

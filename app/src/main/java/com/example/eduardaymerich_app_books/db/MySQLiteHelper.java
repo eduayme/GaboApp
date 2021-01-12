@@ -30,6 +30,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         getWritableDatabase().insert("users", "", contentValues );
     }
 
+    public void insertBookInUser(ContentValues contentValues) {
+        getWritableDatabase().insert("books", "", contentValues );
+    }
+
+    public void deleteBookInUser(String[] contentValues) {
+        getWritableDatabase().delete("books", "", contentValues );
+    }
+
     public boolean isLoginValid(String username, String password) {
         String sql = "Select count(*) from users where username='" + username + "' and password='" + password + "'";
         SQLiteStatement statement = getReadableDatabase().compileStatement(sql);

@@ -1,5 +1,6 @@
 package com.example.eduardaymerich_app_books.models;
 
+import android.app.ActivityManager;
 import android.text.TextUtils;
 
 import org.json.JSONArray;
