@@ -50,7 +50,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         // set book title as title
         this.setTitle(book.getTitle());
 
-        // populate data
+        // get data
         Picasso.with(this).load(Uri.parse(book.getLargeCoverUrl())).error(R.drawable.no_cover).into(ivBookCover);
         tvTitle.setText(book.getTitle());
         tvAuthor.setText(book.getAuthor());
@@ -62,6 +62,8 @@ public class BookDetailsActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Headers headers, JsonHttpResponseHandler.JSON json) {
                 try {
                     JSONObject response = json.jsonObject;
+
+                    // show publishers
                     if (response.has("publishers")) {
                         // display comma separated list of publishers
                         final JSONArray publisher = response.getJSONArray("publishers");
@@ -72,8 +74,16 @@ public class BookDetailsActivity extends AppCompatActivity {
                         }
                         tvPublisher.setText(TextUtils.join(", ", publishers));
                     }
+                    else {
+                        tvPageCount.setText("--");
+                    }
+
+                    // show nº pages
                     if (response.has("number_of_pages")) {
-                        tvPageCount.setText(Integer.toString(response.getInt("number_of_pages")) + " pages");
+                        tvPageCount.setText(Integer.toString(response.getInt("number_of_pages")));
+                    }
+                    else {
+                        tvPageCount.setText("--");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

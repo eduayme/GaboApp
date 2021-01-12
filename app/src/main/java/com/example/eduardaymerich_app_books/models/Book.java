@@ -28,12 +28,12 @@ public class Book implements Serializable {
 
     public String getCoverUrl() {
         return "http://covers.openlibrary.org/b/olid/" +
-                openLibraryId + "-M.jpg";
+                openLibraryId + "-M.jpg?default=false";
     }
 
     public String getLargeCoverUrl() {
         return "http://covers.openlibrary.org/b/olid/" +
-                openLibraryId + "-L.jpg";
+                openLibraryId + "-L.jpg?default=false";
     }
 
     public static Book fromJson(JSONObject jsonObject) {
