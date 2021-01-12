@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class HomeActivity extends AppCompatActivity {
     private BookAdapter bookAdapter;
     private BookClient client;
     private ArrayList<Book> books;
+    private ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +40,15 @@ public class HomeActivity extends AppCompatActivity {
         ArrayList<Book> aBooks = new ArrayList<Book>();
         bookAdapter = new BookAdapter(this, aBooks);
         lvBooks.setAdapter(bookAdapter);
+        progress = (ProgressBar) findViewById(R.id.progress);
     }
 
     // API call to the OpenLibrary
     private void fetchBooks(String query) {
         client = new BookClient();
+        // Show progress bar before any request
+        progress.setVisibility(ProgressBar.VISIBLE);
+
         client.getBooks(query, new JsonHttpResponseHandler() {
 
             @Override
@@ -68,6 +74,9 @@ public class HomeActivity extends AppCompatActivity {
 
                         bookAdapter.notifyDataSetChanged();
                     }
+                    // Hide progress bar
+                    progress.setVisibility(ProgressBar.GONE);
+
                 } catch (JSONException e) {
                     // Invalid JSON format, show appropriate error.
                     e.printStackTrace();
@@ -76,7 +85,8 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-
+                // Hide progress bar
+                progress.setVisibility(ProgressBar.GONE);
             }
         });
     }
