@@ -2,6 +2,7 @@ package com.example.eduardaymerich_app_books.adapters;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,8 @@ public class BookAdapter extends ArrayAdapter<Book> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+        viewHolder.tvTitle.setEllipsize(TextUtils.TruncateAt.END);
+        viewHolder.tvTitle.setMaxLines(2);
         viewHolder.tvTitle.setText(book.getTitle());
         viewHolder.tvAuthor.setText(book.getAuthor());
         Picasso.with(getContext()).load(Uri.parse(book.getCoverUrl())).error(R.drawable.no_cover).into(viewHolder.ivCover);
