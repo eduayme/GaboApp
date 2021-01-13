@@ -2,6 +2,7 @@ package com.example.eduardaymerich_app_books.models;
 
 import android.app.ActivityManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,12 +41,19 @@ public class Book implements Serializable {
     public static Book fromSingleJson(JSONObject jsonObject) {
         Book book = new Book();
         try {
-            book.openLibraryId = jsonObject.getString("key").replace("/books/","");;
+            if (jsonObject.has("key"))  {
+                String id = jsonObject.getString("key");
+                book.openLibraryId = id.replace("/books/", "");
+            }
+            else if(jsonObject.has("edition_key")) {
+                final JSONArray ids = jsonObject.getJSONArray("edition_key");
+                book.openLibraryId = ids.getString(0);
+            }
 
             book.title = jsonObject.has("title") ?
                     jsonObject.getString("title") : "";
 
-            book.author = getAuthor(jsonObject);
+            book.author = "author";
 
         } catch (JSONException e) {
             e.printStackTrace();

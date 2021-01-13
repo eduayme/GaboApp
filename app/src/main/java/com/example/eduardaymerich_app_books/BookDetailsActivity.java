@@ -118,7 +118,10 @@ public class BookDetailsActivity extends AppCompatActivity {
         MenuItem item_save = menu.findItem(R.id.action_save);
         MenuItem item_delete = menu.findItem(R.id.action_delete);
 
-        if( databaseHelper.bookIsSavedInUser(book.getOpenLibraryId()) ) {
+        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+        String usernameCurrentUser = settings.getString("username", "").toString();
+
+        if( databaseHelper.bookIsSavedInUser(book.getOpenLibraryId(), usernameCurrentUser) ) {
             item_save.setVisible(false);
             item_delete.setVisible(true);
         }
@@ -153,9 +156,9 @@ public class BookDetailsActivity extends AppCompatActivity {
 
             case R.id.action_delete:
                 // prepare data
-                String[] deleteData = {usernameCurrentUser, book.getOpenLibraryId()};
+                String[] deleteData = {book.getOpenLibraryId(), usernameCurrentUser};
 
-                // save book in user
+                // delete book in user
                 databaseHelper.deleteBookInUser(deleteData);
                 invalidateOptionsMenu();
 
@@ -174,7 +177,10 @@ public class BookDetailsActivity extends AppCompatActivity {
         MenuItem item_save = menu.findItem(R.id.action_save);
         MenuItem item_delete = menu.findItem(R.id.action_delete);
 
-        if (item_save.isVisible()) {
+        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+        String usernameCurrentUser = settings.getString("username", "").toString();
+
+        if( databaseHelper.bookIsSavedInUser(book.getOpenLibraryId(), usernameCurrentUser) ) {
             item_save.setVisible(false);
             item_delete.setVisible(true);
         }

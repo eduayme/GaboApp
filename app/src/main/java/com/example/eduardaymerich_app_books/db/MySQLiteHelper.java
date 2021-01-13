@@ -66,7 +66,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         getWritableDatabase().insert("users", "", contentValues );
     }
 
-    public int countBooksUser(String username) {
+    public int countBooksFromUser(String username) {
         String sql = "Select count(*) from users_books where username='" + username + "'";
         SQLiteStatement statement = getReadableDatabase().compileStatement(sql);
         int numRows = (int) DatabaseUtils.longForQuery(getReadableDatabase(), sql, null);
@@ -75,58 +75,50 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     public void insertBookInUser(ContentValues contentValues) {
-        getWritableDatabase().insert("users_books", "", contentValues );
+        String bookId = (String) contentValues.get("id_open_library");
+        String username = (String) contentValues.get("username");
+        if( !bookIsSavedInUser(bookId, username) ) {
+            getWritableDatabase().insert("users_books", "", contentValues );
+        }
     }
 
     public void deleteBookInUser(String[] contentValues) {
-        getWritableDatabase().delete("users_books", "username=? and id_open_library=?", contentValues );
+        String bookId = (String) contentValues[0];
+        String username = (String) contentValues[1];
+        if( bookIsSavedInUser(bookId, username) ) {
+            getWritableDatabase().delete("users_books", "id_open_library=? and username=?", contentValues );
+        }
     }
 
-    public boolean bookIsSavedInUser(String openLibraryId) {
-        boolean isSaved = false;
+    public boolean bookIsSavedInUser(String openLibraryId, String username) {
+        String sql = "Select count(*) from users_books where id_open_library='" + openLibraryId + "' and username='" + username + "'";
+        SQLiteStatement statement = getReadableDatabase().compileStatement(sql);
+        long l = statement.simpleQueryForLong();
 
-        //getWritableDatabase().delete("books", "", contentValues );
-
-        return isSaved;
+        if( l == 1 ) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
-    public ArrayList<Book> getBooksFromUser(String username) {
-        ArrayList<Book> books = new ArrayList<Book>();
-        String selectQuery = "Select * from users_books where username='" + username + "'";
+    public ArrayList<String> getBooksFromUser(String username) {
+        ArrayList<String> booksIds = new ArrayList<String>();
+        String selectQuery = "Select id_open_library from users_books where username='" + username + "'";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
         if (c.moveToFirst()) {
-            BookClient client = new BookClient();
-
             do {
                 String id = c.getString((c.getColumnIndex("id_open_library")));
-                client.getExtraDetailsBook( id, new JsonHttpResponseHandler() {
-
-                    @Override
-                    public void onSuccess(int statusCode, Headers headers, JSON json) {
-                        JSONObject response = json.jsonObject;
-
-                        if(response != null) {
-                            Book b = Book.fromSingleJson(response);
-
-                            // adding to books list
-                            books.add(b);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                        // Nothing
-                    }
-                });
-
+                booksIds.add(id);
             } while (c.moveToNext());
         }
 
-        return books;
+        return booksIds;
     }
 
     public boolean isLoginValid(String username, String password) {

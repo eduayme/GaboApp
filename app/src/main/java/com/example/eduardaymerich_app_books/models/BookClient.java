@@ -31,6 +31,11 @@ public class BookClient {
         }
     }
 
+    public void getInfoBook(String openLibraryId, JsonHttpResponseHandler handler) {
+        String url = getApiUrl("works/");
+        client.get(url + openLibraryId + ".json", handler);
+    }
+
     public void getExtraDetailsBook(String openLibraryId, JsonHttpResponseHandler handler) {
         String url = getApiUrl("books/");
         client.get(url + openLibraryId + ".json", handler);

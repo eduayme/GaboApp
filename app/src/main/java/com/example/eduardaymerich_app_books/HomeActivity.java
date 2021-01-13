@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,6 +41,7 @@ public class HomeActivity extends AppCompatActivity {
     private ProgressBar progress;
     private MySQLiteHelper databaseHelper;
     private String usernameCurrentUser;
+    private Integer countBooks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,23 +63,30 @@ public class HomeActivity extends AppCompatActivity {
 
         // display username in title
         final TextView title = (TextView) findViewById(R.id.tvTitleSavedBooks);
-        int count = databaseHelper.countBooksUser(usernameCurrentUser);
-        title.setText("Hi " + usernameCurrentUser + "! Your books (" + count + ")");
+        countBooks = databaseHelper.countBooksFromUser(usernameCurrentUser);
+        title.setText("Hi " + usernameCurrentUser + "! Your books (" + countBooks + ")");
 
-        //fetchBooksFromUser();
+        // get books from the user
+        fetchBooksFromUser();
+        fetchBooks("edu");
+
+        // Set title
+        HomeActivity.this.setTitle("GaboApp");
     }
 
     private void fetchBooksFromUser() {
-        if( databaseHelper.countBooksUser(usernameCurrentUser) > 0 ) {
+        if( countBooks > 0 ) {
             // remove info no books
             final TextView info = (TextView) findViewById(R.id.tvInfoSavedBooks);
             info.setVisibility(View.GONE);
 
-            // get books from the user
-            final ArrayList<Book> booksFromUser = databaseHelper.getBooksFromUser(usernameCurrentUser);
-
             // Show progress bar before any request
             progress.setVisibility(ProgressBar.VISIBLE);
+
+            // get books from the user
+            ArrayList<String> idsBooksFromUser = databaseHelper.getBooksFromUser(usernameCurrentUser);
+
+            ArrayList<Book> booksFromUser = new ArrayList<>();
 
             // Empty adapater
             bookAdapter.clear();

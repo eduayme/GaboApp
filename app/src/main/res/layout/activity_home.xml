@@ -6,15 +6,6 @@
     android:orientation="vertical"
     tools:context=".HomeActivity">
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:max="100"
-        android:indeterminate="true"
-        android:visibility="gone" />
-
     <TextView
         android:id="@+id/tvTitleSavedBooks"
         android:layout_width="match_parent"
@@ -23,7 +14,8 @@
         android:textColor="@color/green_100"
         android:textSize="24sp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"/>
 
     <TextView
         android:id="@+id/tvInfoSavedBooks"
@@ -34,6 +26,15 @@
         android:textSize="16sp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="100"
+        android:indeterminate="true"
+        android:visibility="invisible" />
 
     <ListView
         android:id="@+id/lvBooks"
