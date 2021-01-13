@@ -68,39 +68,84 @@ public class HomeActivity extends AppCompatActivity {
 
         // get books from the user
         fetchBooksFromUser();
-        fetchBooks("edu");
 
         // Set title
         HomeActivity.this.setTitle("GaboApp");
     }
 
     private void fetchBooksFromUser() {
+        client = new BookClient();
+
         if( countBooks > 0 ) {
             // remove info no books
             final TextView info = (TextView) findViewById(R.id.tvInfoSavedBooks);
             info.setVisibility(View.GONE);
 
-            // Show progress bar before any request
-            progress.setVisibility(ProgressBar.VISIBLE);
-
             // get books from the user
             ArrayList<String> idsBooksFromUser = databaseHelper.getBooksFromUser(usernameCurrentUser);
-
-            ArrayList<Book> booksFromUser = new ArrayList<>();
 
             // Empty adapater
             bookAdapter.clear();
 
-            // Insert books en adapter
-            for (Book book : booksFromUser) {
-                bookAdapter.add(book);
-            }
+            // get Books info
+            fetchBooksById(idsBooksFromUser);
 
+            // notify changes in adapter
             bookAdapter.notifyDataSetChanged();
 
             // Hide progress bar
             progress.setVisibility(ProgressBar.GONE);
         }
+    }
+
+    private void fetchBooksById(ArrayList<String> ids) {
+        // Show progress bar before any request
+        progress.setVisibility(ProgressBar.VISIBLE);
+
+        // Empty adapater
+        bookAdapter.clear();
+
+        client = new BookClient();
+
+        // for each book from the user
+        for (String id : ids) {
+            client.getBooks(id, new JsonHttpResponseHandler() {
+
+                @Override
+                public void onSuccess(int statusCode, Headers headers, JSON json) {
+                    try {
+                        JSONArray docs = null;
+                        JSONObject response = json.jsonObject;
+
+                        if(response != null) {
+                            docs = response.getJSONArray("docs");
+
+                            // Lista temporal
+                            final ArrayList<Book> books = Book.fromJson(docs);
+
+                            // Insert books en adapter
+                            for (Book book : books) {
+                                bookAdapter.add(book);
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        // Invalid JSON format, show appropriate error.
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                }
+            });
+        }
+
+        // notify changes in adapter
+        bookAdapter.notifyDataSetChanged();
+
+        // Hide progress bar
+        progress.setVisibility(ProgressBar.GONE);
     }
 
     // API call to the OpenLibrary

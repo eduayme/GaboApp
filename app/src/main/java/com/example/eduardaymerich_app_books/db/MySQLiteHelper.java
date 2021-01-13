@@ -27,7 +27,7 @@ import okhttp3.Headers;
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "gaboapp.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String CREATE_TABLE_USERS =
             "CREATE TABLE if not exists users " +
@@ -105,7 +105,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     public ArrayList<String> getBooksFromUser(String username) {
         ArrayList<String> booksIds = new ArrayList<String>();
-        String selectQuery = "Select id_open_library from users_books where username='" + username + "'";
+        String selectQuery = "Select id_open_library from users_books where username='" + username + "' ORDER BY id_open_library DESC";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
