@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".HomeActivity">
 
@@ -64,8 +65,8 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/published_by"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/published_date"
                         android:textSize="12sp"
                         android:gravity="center"
                         android:layout_marginStart="15dp"
@@ -74,8 +75,8 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/pages"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/published_in"
                         android:textSize="12sp"
                         android:gravity="center"
                         android:layout_marginStart="5dp"
@@ -90,14 +91,79 @@
                     android:weightSum="1" >
 
                     <TextView
-                        android:id="@+id/tvPublisher"
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvPublishDate"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:layout_marginStart="15dp"
                         android:layout_marginEnd="5dp"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:singleLine="true"
+                        android:maxEms="15"
+                        android:ellipsize="end" />
+
+                    <TextView
+                        android:id="@+id/tvPublishCountry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="15dp"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:singleLine="true"
+                        android:maxEms="5"
+                        android:ellipsize="end" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/published_by"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="5dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/pages"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="15dp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1" >
+
+                    <TextView
+                        android:id="@+id/tvPublisher"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="5dp"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:singleLine="true"
+                        android:maxEms="5"
+                        android:ellipsize="end" />
 
                     <TextView
                         android:id="@+id/tvPageCount"
@@ -107,7 +173,10 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="15dp"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:singleLine="true"
+                        android:maxEms="5"
+                        android:ellipsize="end" />
 
                 </TableRow>
 

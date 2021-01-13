@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -31,6 +32,8 @@ public class BookDetailsActivity extends AppCompatActivity {
     private ImageView ivBookCover;
     private TextView tvTitle;
     private TextView tvAuthor;
+    private TextView tvPublishDate;
+    private TextView tvPublishCountry;
     private TextView tvPublisher;
     private TextView tvPageCount;
     private Book book;
@@ -47,6 +50,8 @@ public class BookDetailsActivity extends AppCompatActivity {
         tvAuthor = (TextView) findViewById(R.id.tvAuthor);
         tvPublisher = (TextView) findViewById(R.id.tvPublisher);
         tvPageCount = (TextView) findViewById(R.id.tvPageCount);
+        tvPublishDate = (TextView) findViewById(R.id.tvPublishDate);
+        tvPublishCountry = (TextView) findViewById(R.id.tvPublishCountry);
 
         // book data into views
         book = (Book) getIntent().getSerializableExtra(HomeActivity.BOOK_DETAIL_KEY);
@@ -76,7 +81,23 @@ public class BookDetailsActivity extends AppCompatActivity {
                 try {
                     JSONObject response = json.jsonObject;
 
-                    // show publishers
+                    // Publish date
+                    if (response.has("publish_date")) {
+                        tvPublishDate.setText(response.getString("publish_date"));
+                    }
+                    else {
+                        tvPublishDate.setText("--");
+                    }
+
+                    // Publish country
+                    if (response.has("publish_country")) {
+                        tvPublishCountry.setText(response.getString("publish_country").toUpperCase());
+                    }
+                    else {
+                        tvPublishCountry.setText("--");
+                    }
+
+                    // Publishers
                     if (response.has("publishers")) {
                         // display comma separated list of publishers
                         final JSONArray publisher = response.getJSONArray("publishers");
@@ -88,16 +109,19 @@ public class BookDetailsActivity extends AppCompatActivity {
                         tvPublisher.setText(TextUtils.join(", ", publishers));
                     }
                     else {
-                        tvPageCount.setText("--");
+                        tvPublisher.setText("--");
                     }
 
-                    // show nº pages
+                    // Nº pages
                     if (response.has("number_of_pages")) {
                         tvPageCount.setText(Integer.toString(response.getInt("number_of_pages")));
                     }
                     else {
                         tvPageCount.setText("--");
                     }
+
+                    Log.d("response: ", response.toString());
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

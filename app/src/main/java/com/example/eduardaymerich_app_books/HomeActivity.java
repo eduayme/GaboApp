@@ -99,11 +99,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void fetchBooksById(ArrayList<String> ids) {
-        // Show progress bar before any request
-        progress.setVisibility(ProgressBar.VISIBLE);
-
         // Empty adapater
         bookAdapter.clear();
+
+        // Show progress bar before any request
+        progress.setVisibility(ProgressBar.VISIBLE);
 
         client = new BookClient();
 
@@ -151,6 +151,10 @@ public class HomeActivity extends AppCompatActivity {
     // API call to the OpenLibrary
     private void fetchBooks(String query) {
         client = new BookClient();
+
+        // Empty adapater
+        bookAdapter.clear();
+
         // Show progress bar before any request
         progress.setVisibility(ProgressBar.VISIBLE);
 
@@ -168,9 +172,6 @@ public class HomeActivity extends AppCompatActivity {
 
                         // Lista temporal
                         final ArrayList<Book> books = Book.fromJson(docs);
-
-                        // Empty adapater
-                        bookAdapter.clear();
 
                         // Insert books en adapter
                         for (Book book : books) {

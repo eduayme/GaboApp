@@ -16,6 +16,10 @@
     <string name="published_by">Published by</string>
     <string name="pages">Pages</string>
     <string name="save">Save</string>
-    <string name="no_books_in_your_lists_explore_to_add_one">No books in your lists. Explore to add one</string>
+    <string name="no_books_in_your_lists_explore_to_add_one">No books in your lists. Search to add one</string>
     <string name="your_saved_books">Your saved books</string>
+    <string name="description">Description</string>
+    <string name="first_sentence">First sentence</string>
+    <string name="published_in">Published in</string>
+    <string name="published_date">Published date</string>
 </resources>
