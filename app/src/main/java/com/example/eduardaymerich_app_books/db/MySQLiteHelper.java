@@ -27,7 +27,7 @@ import okhttp3.Headers;
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "gaboapp.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
 
     private static final String CREATE_TABLE_USERS =
             "CREATE TABLE if not exists users " +

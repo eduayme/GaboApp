@@ -16,8 +16,9 @@
 
         <ImageButton
             android:id="@+id/imgbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="fitXY"
             android:gravity="center"
             android:background="@android:color/transparent"
             android:src="@mipmap/ic_launcher" />
